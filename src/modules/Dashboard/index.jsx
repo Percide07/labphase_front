@@ -1,5 +1,6 @@
 import React from 'react';
-import Avatar from '../../assets/avatar.svg'
+import Avatar from '../../assets/avatar.svg';
+import Input from '../../components/inputs';
 const Dashboard = () => {
     const contacts = () => [
         { name: 'Saad', status: 'Avalaible', img: Avatar},
@@ -45,7 +46,7 @@ const Dashboard = () => {
             </div>
         </div>
             <div className="w-[50%] h-screen bg-white flex flex-col items-center">
-                <div className=" flex w-[75%] bg-secondary h-[80px] mt-14 rounded-full items-center px-14">
+                <div className=" flex w-[75%] bg-secondary h-[80px] mt-14 rounded-full items-center px-14 shadow-lg">
                     <div className='cursor-pointer'> <img src={Avatar} width={50} height={50} alt="avatar's photo"/></div>
                     <div className='ml-6 mr-auto'>
                         <h3 className='text-lg '>Alexander</h3>
@@ -60,8 +61,8 @@ const Dashboard = () => {
                         </svg>
                     </div>
                 </div>
-                <div className='h-[75%] border w-full overflow-y-scroll border-b'>
-                    <div className='p-10 '>
+                <div className='h-[75%]  w-full overflow-y-scroll shadow-sm'>
+                    <div className='p-[10vh] '>
                         <div className='max-w-[40%] p-4 bg-secondary rounded-b-xl rounded-tr-xl mb-6'>
                             Lorem ipsum dolor sit amet.
                         </div>
@@ -94,11 +95,25 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-                <div className='p-10 w-full '>
-                    <input type="text" placeholder='Type your message...' className='w-full' inputClassName='p-4 border-0 shadow-lg'/>
+                <div className='flex p-10 w-full flex-row items-center'>
+                    <div className='mr-4 p-2 cursor-pointer bg-light rounded-full'>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler 
+                        icon-tabler-circle-plus" width="30" height="30" viewBox="0 0 24 24" 
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" 
+                        stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M9 12h6" /><path d="M12 9v6" /></svg>
+                    </div>
+                    <Input type="text" placeholder='Type your message...' className='w-[75%]' inputClassName='p-4 border-0 shadow-md rounded-full bg-secondary'/>
+                    <div className='ml-4 p-2 cursor-pointer bg-light rounded-full'>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" 
+                        width="24" height="30" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" 
+                        fill="none" stroke-linecap="round" stroke-linejoin="round"><path 
+                        stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 14l11 -11" /><path 
+                        d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></svg>
+                    </div>
                 </div>
             </div>
-            <div className="w-[25%] h-screen ">
+            <div className="w-[25%] h-screen bg-light ">
 
             </div>
         </div>
