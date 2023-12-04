@@ -1,0 +1,17 @@
+{
+                            contacts.map(({ name , status , img }) => {
+                                return(
+                                    <div>
+                                            <div className='flex justify-center items-center my-8'>
+                                                <div className='border border-primary p-[2px] rounded-full'>
+                                                    <img src={img} width={50} height={50} alt="avatar's photo" />
+                                                </div>
+                                                <div className='ml-8'>
+                                                    <h3 className='text-2xl'>{name}</h3>
+                                                    <p className='text-lg font-light'>{status}</p>
+                                                </div>
+                                            </div>
+                                    </div>
+                                )
+                            })
+                        }
