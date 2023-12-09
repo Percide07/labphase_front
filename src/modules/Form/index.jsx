@@ -14,16 +14,32 @@ const   Form = ({
         password:'',
     })
     // console.log('data', data)
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+
+    const handleSubmit = async(e) => {
+        console.log('data :>> ', data);
+        e.preventDefault()
+        const res = await fetch(`http://localhost:8000/api/${isSignInPage ? 'login' : 'register'}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+
+    }
+
+
     return (
         <div className="bg-light h-screen flex items-center justify-center">
             <div className="bg-blue-300 h-[600px] w-[600px] flex flex-col items-center justify-center shadow-lg rounded">
                 <div className="text-4xl font-extrabold">Welcome {isSignInPage && 'Back'} </div>
                 <div className=" text-xl font-light mb-10">{isSignInPage ? 'Sign in to get explored' : 'Sign up to get started' } </div>
-                <form className="flex flex-col items-center w-full" onSubmit={() => {}}>
+                <form className="flex flex-col items-center w-full" onSubmit={(e) => handleSubmit(e)}>
                     {!isSignInPage && <Input label='Full Name' name='name' placeholder='Enter your full name' className='mb-8 w-[50%]' value={data.fullName} 
                     onChange={(e) => setData({...data, fullName: e.target.value})}/>}
-                    <Input label='Email Address' type="email" name='name' placeholder='Enter your email' className='mb-8 w-[50%]' value={data.email}
+                    <Input label='Email Address' type="email" name='email' placeholder='Enter your email' className='mb-8 w-[50%]' value={data.email}
                     onChange={(e) => setData({...data, email: e.target.value})}/>
                     <Input label='Password' type="password" name='Password' placeholder='Enter your Password' className='mb-8 w-[50%]' value={data.password} 
                     onChange={(e) => setData({...data, password: e.target.value})}/>
