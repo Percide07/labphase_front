@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '../../assets/avatar.svg';
 import Input from '../../components/inputs';
 const Dashboard = () => {
@@ -11,6 +11,27 @@ const Dashboard = () => {
         { name: 'Manassé', status: 'Avalaible', img: Avatar},
     ]
 
+        useEffect(()=> {
+            const loggedInUser = JSON.parse(localStorage.getItem('user:detail'))
+            const fetchConversations = async()=> {
+                const res = await fetch(`http://localhost:8000/api/conversations/${loggedInUser?.id}`,{
+                    method:'GET',
+                    headers:{
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const resData = await res.json()
+                console.log('resData:::::', resData);
+                setConversations(resData)
+            }
+            fetchConversations()
+        }, [])
+
+
+        const [user,setUser] = useState(JSON.parse(localStorage.getItem('user:detail')))
+        const [conversations, setConversations] = useState([])
+        console.log('user: ', user);
+        console.log('conversations: ', conversations);
     return(
         <div className="w-screen flex">
             <div className="w-[25%] h-screen  border-black bg-secondary">
@@ -19,7 +40,7 @@ const Dashboard = () => {
                         <img src={Avatar} width={50} height={50} alt="avatar's photo" />
                     </div>
                     <div className='ml-8'>
-                        <h3 className='text-2xl'>Tutorial</h3>
+                        <h3 className='text-2xl'> {user?.fullName} </h3>
                         <p className='text-lg font-light'>My Account</p>
                     </div>
                 </div>
@@ -28,20 +49,22 @@ const Dashboard = () => {
                     <div className='text-primary text-lg'>Messages</div>
                     <div>
                         {
-                            contacts().map((contact, index) => (
-                                <div key={index} className='flex items-center py-4 border-b border-b-gray-600'>
+                            conversations.map(({conversationId , user}) => {
+                            return(
+                                <div  className='flex items-center py-4 border-b border-b-gray-600'>
                                     <div className='cursor-pointer flex items-center'>
                                         <div className='border border-primary p-[2px] rounded-full'>
-                                            <img src={contact.img} width={50} height={50} alt="avatar's photo"/>
+                                            <img src={Avatar} width={50} height={50} alt="avatar's photo"/>
                                         </div>
                                         <div className='ml-8'>
-                                            <h3 className='text-lg'>{contact.name}</h3>
-                                            <p className='text-sm font-light text-gray-600'>{contact.status}</p>
+                                            <h3 className='text-lg'> {user?.fullName} </h3>
+                                            <p className='text-sm font-light text-gray-600'>{user?.email}</p>
                                         </div>
                                     </div>  
                                 </div>
-                            ))
-                        }
+                            )
+                        })
+                    }
                     </div>
             </div>
         </div>
