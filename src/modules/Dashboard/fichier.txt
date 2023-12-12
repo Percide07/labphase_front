@@ -29,3 +29,12 @@
                                     </div>  
                                 </div>
                             ))
+
+                              const contacts = () => [
+        { name: 'Saad', status: 'Avalaible', img: Avatar},
+        { name: 'Percide', status : 'Avalaible', img: Avatar},
+        { name: 'Mamadou', status: 'Avalaible', img: Avatar},
+        { name: 'Yousra', status: 'Avalaible', img: Avatar},
+        { name: 'Adam', status: 'Avalaible', img: Avatar},
+        { name: 'Manassé', status: 'Avalaible', img: Avatar},
+    ]
