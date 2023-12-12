@@ -6,6 +6,11 @@ const Dashboard = () => {
     const [conversations, setConversations] = useState([]);
     const [messages,setMessages] = useState({});
     const [message,setMessage] = useState([]);
+    const [users,setUsers] = useState([]);
+    console.log('user',user);
+    console.log('conversations',conversations);
+    console.log('messages',messages);
+    console.log('users',users);
 
         useEffect(()=> {
             const loggedInUser = JSON.parse(localStorage.getItem('user:detail'))
@@ -22,11 +27,22 @@ const Dashboard = () => {
 		fetchConversations()
         }, [])
 
-        console.log('user: ', user);
-        console.log('conversations: ', conversations);
+        useEffect(()=>{
+            const fetchUsers = async()=>{
+                const res = await fetch(`http://localhost:8000/api/users/${user?.id}`,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type':'application/json',
+                    }
+                });
+                const resData = await res.json();
+                setUsers(resData);
+            }
+            fetchUsers()
+        },[])
 
-        const fetchMessages = async(conversationId,user) => {
-            const res = await fetch(`http://localhost:8000/api/message/${conversationId}`,{
+        const fetchMessages = async(conversationId, receiver) => {
+            const res = await fetch(`http://localhost:8000/api/message/${conversationId}?senderId=${user?.id}&&receiverId=${receiver?.receiverId}`,{
                 method:'GET',
                 headers:{
                     'Content-Type': 'application/json',
@@ -34,7 +50,7 @@ const Dashboard = () => {
             });
             const resData = await res.json();
             console.log('resData:1234',resData)
-            setMessages({messages: resData, receiver: user, conversationId});
+            setMessages({messages: resData, receiver, conversationId});
         }
 
     const sendMessage = async (e) => {
@@ -47,7 +63,7 @@ const Dashboard = () => {
                 conversationId: messages?.conversationId,
                 senderId: user?.id,
                 message,
-                receiverId: message?.receiver?.receiverId
+                receiverId: messages?.receiver?.receiverId
             })
         });
         setMessage('')
@@ -151,8 +167,30 @@ const Dashboard = () => {
                     </div>
                 }
             </div>
-            <div className="w-[25%] h-screen bg-light ">
-
+            <div className="w-[25%] h-screen bg-light px-8 py-24">
+                <div className='text-primary text-lg'>Peoples</div>
+                <div>
+                        {
+                            users.length > 0 ?
+                            users.map(({userId , user}) => {
+                            return(
+                                <div  className='flex items-center py-4 border-b border-b-gray-600'>
+                                    <div className='cursor-pointer flex items-center' onClick={()=>{
+                                        fetchMessages('new',user)
+                                    }}>
+                                        <div className='border border-primary p-[2px] rounded-full'>
+                                            <img src={Avatar} width={50} height={50} alt="avatar's photo"/>
+                                        </div>
+                                        <div className='ml-8'>
+                                            <h3 className='text-lg'> {user?.fullName} </h3>
+                                            <p className='text-sm font-light text-gray-600'> {user?.email} </p>
+                                        </div>
+                                    </div>  
+                                </div>
+                            )
+                        }) : <div className='text-center text-lg font-semibold mt-2'>No Conversations</div>
+                    }
+                    </div>
             </div>
         </div>
     )
