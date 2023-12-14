@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Avatar from '../../assets/avatar.svg';
 import Input from '../../components/inputs';
 import { io } from 'socket.io-client';
@@ -10,7 +10,7 @@ const Dashboard = () => {
     const [message,setMessage] = useState([]);
     const [users,setUsers] = useState([]);
     const [socket,setSocket] = useState(null);
-
+    const messageRef = useRef(null);
 
     console.log(messages,'messages')
 
@@ -31,6 +31,11 @@ const Dashboard = () => {
                 }))
             })
         },  [socket])
+
+
+        useEffect(()=>{
+            message?.current?.scrollIntoView({ behavior: 'smooth' })
+        }, [messages?.messages])
 
         useEffect(()=> {
             const loggedInUser = JSON.parse(localStorage.getItem('user:detail'))
@@ -99,7 +104,7 @@ const Dashboard = () => {
 
     return(
         <div className="w-screen flex">
-            <div className="w-[25%] h-screen  border-black bg-secondary">
+            <div className="w-[25%] h-screen  border-black bg-secondary overflow-scroll">
                 <div className='flex items-center my-5 mx-14'>
                     <div className='border border-primary p-[2px] rounded-full'>
                         <img src={Avatar} width={50} height={50} alt="avatar's photo" />
@@ -162,9 +167,12 @@ const Dashboard = () => {
                             messages?.messages?.length > 0 ?
                             messages.messages.map(({ message, user : { id } = {} }) => {
                                 return(
-                                    <div className={`max-w-[40%] rounded-b-xl p-4 mb-6 
-                                    ${id === user?.id ? 'bg-primary rounded-tl-xl ml-auto text-white':'bg-secondary rounded-tl-xl'} `}>
-                                        {message} </div>
+                                    <>
+                                        <div className={`max-w-[40%] rounded-b-xl p-4 mb-6 
+                                        ${id === user?.id ? 'bg-primary rounded-tl-xl ml-auto text-white':'bg-secondary rounded-tl-xl'} `}>
+                                            {message} </div>
+                                        <div ref={messageRef}></div>
+                                    </>
                                 )
                             }) : <div className='text-center text-lg font-semibold mt-2'>No Messages or No Conversation Selected</div>
                         }
@@ -193,7 +201,7 @@ const Dashboard = () => {
                     </div>
                 }
             </div>
-            <div className="w-[25%] h-screen bg-light px-8 py-24">
+            <div className="w-[25%] h-screen bg-light px-8 py-24 overflow-scroll">
                 <div className='text-primary text-lg'>Peoples</div>
                 <div>
                         {
